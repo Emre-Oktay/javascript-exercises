@@ -1,15 +1,21 @@
 let restartBtn = document.createElement('button');
 let result = document.querySelector('#result');
+let score = document.querySelector('#score');
+let gameResult = document.querySelector('#gameResult');
+let stats = document.querySelector('.stats');
+
 let playerWins = 0;
 let computerWins = 0;
 let round = 0;
 
 let buttons = document.querySelector('#buttons');
 buttons.addEventListener('click', (event) => {
-    let target = event.target;
-    const computerSelection = getComputerChoice();
-    playRound(computerSelection, target.id);
-    updateScore(computerWins, playerWins, round);
+    if (event.target.matches('button')) {
+        let target = event.target;
+        const computerSelection = getComputerChoice();
+        playRound(computerSelection, target.id);
+        updateScore(computerWins, playerWins, round);
+    }
 });
 
 function getComputerChoice() {
@@ -18,9 +24,8 @@ function getComputerChoice() {
 }
 
 function playRound(computerSelection, playerSelection) {
-    const choices = ['rock', 'paper', 'scissors'];
     let outcome = '';
-
+    round++;
     if (playerSelection == 'rock') {
         if (computerSelection == 'rock') {
             outcome = 'Tie';
@@ -46,22 +51,19 @@ function playRound(computerSelection, playerSelection) {
             outcome = 'Tie';
         }
     }
-    round++;
     if (outcome == 'Win') {
         playerWins++;
-        result.textContent = `You win! ${playerSelection} beats ${computerSelection}`;
+        result.textContent = `You play ${playerSelection}, computer plays ${computerSelection}. You Win!`;
     } else if (outcome == 'Lose') {
         computerWins++;
-        result.textContent = `You Lose! ${computerSelection} beats ${playerSelection}`;
+        result.textContent = `You play ${playerSelection}, computer plays ${computerSelection}. You Lose!`;
     } else if (outcome == 'Tie') {
-        result.textContent = 'It is a Tie!';
+        result.textContent = `You play ${playerSelection}, computer plays ${computerSelection}. It\'s a tie`;
     }
 }
 
 function updateScore(computerWins, playerWins, round) {
-    const score = document.querySelector('#score');
     if (round == 5) {
-        const gameResult = document.querySelector('#gameResult');
         if (playerWins > computerWins) {
             gameResult.textContent = 'You Win!';
             score.textContent = `Player: ${playerWins} - Computer: ${computerWins}`;
@@ -73,9 +75,9 @@ function updateScore(computerWins, playerWins, round) {
             score.textContent = `Player: ${playerWins} - Computer: ${computerWins}`;
         }
         score.textContent = `Round: ${round}, Player: ${playerWins} - Computer: ${computerWins}`;
-        restartBtn.addEventListener('click', restartGame());
+        restartBtn.addEventListener('click', restartGame);
         restartBtn.textContent = 'Restart';
-        gameResult.appendChild(restartBtn);
+        stats.appendChild(restartBtn);
     } else {
         score.textContent = `Round: ${round}, Player: ${playerWins} - Computer: ${computerWins}`;
     }
@@ -85,5 +87,8 @@ function restartGame() {
     playerWins = 0;
     computerWins = 0;
     round = 0;
-    restartBtn.remove();
+    stats.removeChild(restartBtn);
+    score.textContent = '';
+    result.textContent = '';
+    gameResult.textContent = '';
 }
