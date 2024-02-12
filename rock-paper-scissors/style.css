@@ -1,20 +1,50 @@
 .container {
     margin: auto;
-    width: 50%;
+    width: 80%;
+    max-width: 600px;
     border: 2px solid gray;
-    padding: 10px;
+    padding: 20px;
     text-align: center;
+    border-radius: 10px;
+    background-color: #f9f9f9;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 .stats {
-    display: flex;
-    align-items: center;
-    flex-direction: column;
+    margin-top: 20px;
+}
+
+#result,
+#score,
+#gameResult {
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    background-color: #fff;
+    font-size: 1.2rem;
+    height: 25px;
+    overflow: auto;
 }
 
 .buttons {
     display: flex;
     justify-content: space-evenly;
     align-items: center;
-    height: 200px;
+    margin-top: 20px;
+}
+
+.btn {
+    padding: 10px 20px;
+    font-size: 1rem;
+    border: 2px solid #333;
+    border-radius: 5px;
+    background-color: #fff;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.btn:hover {
+    background-color: #333;
+    color: #fff;
 }

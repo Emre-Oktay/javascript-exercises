@@ -77,6 +77,7 @@ function updateScore(computerWins, playerWins, round) {
         score.textContent = `Round: ${round}, Player: ${playerWins} - Computer: ${computerWins}`;
         restartBtn.addEventListener('click', restartGame);
         restartBtn.textContent = 'Restart';
+        restartBtn.setAttribute('class', 'btn');
         stats.appendChild(restartBtn);
     } else {
         score.textContent = `Round: ${round}, Player: ${playerWins} - Computer: ${computerWins}`;
