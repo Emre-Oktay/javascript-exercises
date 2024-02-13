@@ -1,0 +1,38 @@
+.container {
+    margin: auto;
+    width: 40em;
+    height: 40em;
+    border: 2px solid gray;
+    padding: 20px;
+    border-radius: 10px;
+    background-color: #f9f9f9;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+#grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 640px;
+    height: 640px;
+}
+
+.cell {
+    margin: 0;
+    box-sizing: border-box;
+}
+
+.btn {
+    padding: 10px 20px;
+    font-size: 1rem;
+    border: 2px solid gray;
+    border-radius: 5px;
+    background-color: #fff;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.sizeDiv {
+    text-align: center;
+    padding: 1em;
+}
