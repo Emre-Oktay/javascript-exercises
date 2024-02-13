@@ -2,6 +2,7 @@ let divs = [];
 let size = 16;
 let grid = document.querySelector('#grid');
 let sizeBtn = document.querySelector('#sizeBtn');
+let randomCheck = document.querySelector('#randomColor');
 currentColor = 'black';
 updateGrid();
 
@@ -22,7 +23,12 @@ function updateGrid() {
 grid.addEventListener('mouseover', (event) => {
     if (event.target.matches('.cell')) {
         let target = event.target;
-        target.style.backgroundColor = currentColor;
+        if (randomCheck.checked) {
+            target.style.backgroundColor =
+                '#' + Math.floor(Math.random() * 16777215).toString(16);
+        } else {
+            target.style.backgroundColor = currentColor;
+        }
     }
 });
 

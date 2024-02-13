@@ -1,7 +1,8 @@
 .container {
+    display: flex;
+    justify-content: center;
     margin: auto;
-    width: 40em;
-    height: 40em;
+    width: fit-content;
     border: 2px solid gray;
     padding: 20px;
     border-radius: 10px;
@@ -15,6 +16,7 @@
     justify-content: center;
     width: 640px;
     height: 640px;
+    border: 2px solid gray;
 }
 
 .cell {
@@ -33,6 +35,11 @@
 }
 
 .sizeDiv {
+    text-align: center;
+    padding: 1em;
+}
+
+.options {
     text-align: center;
     padding: 1em;
 }
