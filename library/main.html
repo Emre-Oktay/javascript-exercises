@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Library</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div class="header">
+        <h1>Library</h1>
+    </div>
+    <div class="new-book">
+        <button id="showDialog">Add New Book</button>
+    </div>
+    <dialog id="bookDialog">
+        <form id="bookForm">
+            <div>
+                <label for="title">Title:</label><br>
+                <input type="text" id="title" name="title"><br>
+            </div>
+            <div>
+                <label for="author">Author:</label><br>
+                <input type="text" id="author" name="author"><br>
+            </div>
+            <div>
+                <label for="pages">Number of Pages:</label><br>
+                <input type="number" id="pages" name="pages"><br>
+            </div>
+            <div>
+                <input type="checkbox" id="isRead" name="isRead" /> <label for="isRead">Read</label><br>
+            </div>
+            <div>
+                <button value="cancel" formmethod="dialog">Cancel</button>
+                <button id="confirmBtn" value="default">Confirm</button>
+            </div>
+        </form>
+    </dialog>
+
+    <div id="bookGrid" class="book-grid">
+
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

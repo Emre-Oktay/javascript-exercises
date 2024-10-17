@@ -15,3 +15,7 @@ Browser-based drawing project. Use your mouse to create sketches on a digital ca
 ### Calculator
 
 JavaScript calculator. Perform basic arithmetic operations.
+
+### Library
+
+A web-based Library App that allows users to add, display, and remove books from their collection.
