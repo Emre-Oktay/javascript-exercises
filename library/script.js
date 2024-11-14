@@ -1,100 +1,150 @@
-const myLibrary = [];
+class Book {
+    constructor(title, author, pages, isRead) {
+        this.title = title;
+        this.author = author;
+        this.pages = pages;
+        this.isRead = isRead;
+    }
 
-function Book(title, author, pages, isRead) {
-    this.title = title;
-    this.author = author;
-    this.pages = pages;
-    this.isRead = isRead;
-    this.info = function () {
-        return (`${title} by ${author}, ${pages}, ${isRead}`)
-    };
+    info() {
+        return `${this.title} by ${this.author}, ${this.pages} pages, ${this.isRead ? 'Read' : 'Not Read'}`;
+    }
 }
 
 
-function addBookToLibrary() {
-    const book = new Book(title.value, author.value, pages.value, isRead.checked);
-    myLibrary.push(book);
+class Library {
+    constructor() {
+        this.books = [];
+    }
+
+    addBook(book) {
+        this.books.push(book);
+    }
+
+    deleteBook(index) {
+        this.books.splice(index, 1);
+    }
+
+    toggleReadStatus(index) {
+        const book = this.books[index];
+        book.isRead = !book.isRead;
+    }
+
+    getBook(index) {
+        return this.books[index];
+    }
+
+    getAllBooks() {
+        return this.books;
+    }
 }
 
 
-function deleteBook(index) {
-    myLibrary.splice(index, 1);
-    displayBooks();
-}
+class UI {
+    constructor() {
+        this.bookGrid = document.getElementById("bookGrid");
+        this.bookDialog = document.getElementById("bookDialog");
+        this.showButton = document.getElementById("showDialog");
+        this.confirmBtn = document.getElementById("confirmBtn");
+        this.form = document.getElementById("bookForm");
 
-function toggleReadStatus(index) {
-    myLibrary[index].isRead = !myLibrary[index].isRead;
-    displayBooks();
-}
 
-function displayBooks() {
-    bookGrid.innerHTML = '';
+        this.titleInput = this.bookDialog.querySelector("#title");
+        this.authorInput = this.bookDialog.querySelector("#author");
+        this.pagesInput = this.bookDialog.querySelector("#pages");
+        this.isReadInput = this.bookDialog.querySelector("#isRead");
+    }
 
-    myLibrary.forEach(function (book, index) {
-        const card = document.createElement('div');
-        card.className = 'book-card';
-        card.dataset.id = index;
+    displayBooks(books) {
+        this.bookGrid.innerHTML = '';
 
-        const titleElement = document.createElement('h3');
-        titleElement.textContent = book.title;
-        const authorElement = document.createElement('p');
-        authorElement.textContent = `Author: ${book.author}`;
-        const pagesElement = document.createElement('p');
-        pagesElement.textContent = `Pages: ${book.pages}`;
+        books.forEach((book, index) => {
+            const card = document.createElement('div');
+            card.className = 'book-card';
+            card.dataset.id = index;
 
-        card.appendChild(titleElement);
-        card.appendChild(authorElement);
-        card.appendChild(pagesElement);
+            const titleElement = document.createElement('h3');
+            titleElement.textContent = book.title;
+            const authorElement = document.createElement('p');
+            authorElement.textContent = `Author: ${book.author}`;
+            const pagesElement = document.createElement('p');
+            pagesElement.textContent = `Pages: ${book.pages}`;
 
-        const buttons = document.createElement('div');
-        buttons.className = 'buttons';
+            card.appendChild(titleElement);
+            card.appendChild(authorElement);
+            card.appendChild(pagesElement);
 
-        const deleteButton = document.createElement('button');
-        deleteButton.textContent = 'Delete'
-        deleteButton.addEventListener('click', function () {
-            deleteBook(index);
+            const buttons = document.createElement('div');
+            buttons.className = 'buttons';
+
+            const deleteButton = document.createElement('button');
+            deleteButton.textContent = 'Delete';
+            deleteButton.addEventListener('click', () => {
+                library.deleteBook(index);
+                this.displayBooks(library.getAllBooks());
+            });
+            buttons.appendChild(deleteButton);
+
+            const readButton = document.createElement('button');
+            readButton.textContent = book.isRead ? 'Read' : 'Not Read';
+            readButton.addEventListener('click', () => {
+                library.toggleReadStatus(index);
+                this.displayBooks(library.getAllBooks());
+            });
+            buttons.appendChild(readButton);
+
+            card.appendChild(buttons);
+
+            this.bookGrid.appendChild(card);
         });
-        buttons.appendChild(deleteButton);
+    }
 
-        const readButton = document.createElement('button');
-        readButton.textContent = book.isRead ? 'Read' : 'Not Read';
-        readButton.addEventListener('click', function () {
-            toggleReadStatus(index);
-        });
-        buttons.appendChild(readButton);
+    showDialog() {
+        this.bookDialog.showModal();
+    }
 
-        card.appendChild(buttons);
+    closeDialog() {
+        this.bookDialog.close();
+    }
 
-        bookGrid.appendChild(card);
-    });
+    resetForm() {
+        this.form.reset();
+    }
+
+    getFormData() {
+        const title = this.titleInput.value;
+        const author = this.authorInput.value;
+        const pages = parseInt(this.pagesInput.value);
+        const isRead = this.isReadInput.checked;
+        return { title, author, pages, isRead };
+    }
 }
 
-const showButton = document.getElementById("showDialog");
-const bookDialog = document.getElementById("bookDialog");
-const outputBox = document.querySelector("output");
-const confirmBtn = bookDialog.querySelector("#confirmBtn");
-const bookGrid = document.getElementById("bookGrid")
 
-const title = bookDialog.querySelector("#title");
-const author = bookDialog.querySelector("#author");
-const pages = bookDialog.querySelector("#pages");
-const isRead = bookDialog.querySelector("#isRead");
+const library = new Library();
+const ui = new UI();
 
-showButton.addEventListener("click", () => {
-    bookDialog.showModal();
+
+document.addEventListener('DOMContentLoaded', () => {
+    createDummyBooks();
 });
 
-bookDialog.addEventListener("close", (e) => {
-    //Reset the form here
-    document.getElementById("bookForm").reset()
+ui.showButton.addEventListener("click", () => {
+    ui.showDialog();
 });
 
-confirmBtn.addEventListener("click", (event) => {
+ui.bookDialog.addEventListener("close", () => {
+    ui.resetForm();
+});
+
+ui.confirmBtn.addEventListener("click", (event) => {
     event.preventDefault();
-    addBookToLibrary();
-    displayBooks();
-    console.log(myLibrary);
-    bookDialog.close();
+    const { title, author, pages, isRead } = ui.getFormData();
+    const newBook = new Book(title, author, pages, isRead);
+    library.addBook(newBook);
+    ui.displayBooks(library.getAllBooks());
+    console.log(library.getAllBooks());
+    ui.closeDialog();
 });
 
 function createDummyBooks() {
@@ -102,11 +152,9 @@ function createDummyBooks() {
     const book2 = new Book("1984", "George Orwell", 328, false);
     const book3 = new Book("To Kill a Mockingbird", "Harper Lee", 281, true);
 
-    myLibrary.push(book1, book2, book3);
+    library.addBook(book1);
+    library.addBook(book2);
+    library.addBook(book3);
 
-    displayBooks();
+    ui.displayBooks(library.getAllBooks());
 }
-
-document.addEventListener('DOMContentLoaded', () => {
-    createDummyBooks();
-});
