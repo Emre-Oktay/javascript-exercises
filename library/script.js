@@ -11,7 +11,6 @@ class Book {
     }
 }
 
-
 class Library {
     constructor() {
         this.books = [];
@@ -39,20 +38,22 @@ class Library {
     }
 }
 
-
 class UI {
     constructor() {
-        this.bookGrid = document.getElementById("bookGrid");
-        this.bookDialog = document.getElementById("bookDialog");
-        this.showButton = document.getElementById("showDialog");
-        this.confirmBtn = document.getElementById("confirmBtn");
-        this.form = document.getElementById("bookForm");
+        this.bookGrid = document.getElementById('bookGrid');
+        this.bookDialog = document.getElementById('bookDialog');
+        this.showButton = document.getElementById('showDialog');
+        this.confirmBtn = document.getElementById('confirmBtn');
+        this.form = document.getElementById('bookForm');
 
+        this.titleInput = document.getElementById('title');
+        this.authorInput = document.getElementById('author');
+        this.pagesInput = document.getElementById('pages');
+        this.isReadInput = document.getElementById('isRead');
 
-        this.titleInput = this.bookDialog.querySelector("#title");
-        this.authorInput = this.bookDialog.querySelector("#author");
-        this.pagesInput = this.bookDialog.querySelector("#pages");
-        this.isReadInput = this.bookDialog.querySelector("#isRead");
+        this.titleError = document.querySelector('#title + span.error');
+        this.authorError = document.querySelector('#author + span.error');
+        this.pagesError = document.querySelector('#pages + span.error');
     }
 
     displayBooks(books) {
@@ -120,25 +121,58 @@ class UI {
     }
 }
 
-
 const library = new Library();
 const ui = new UI();
-
 
 document.addEventListener('DOMContentLoaded', () => {
     createDummyBooks();
 });
 
-ui.showButton.addEventListener("click", () => {
+ui.showButton.addEventListener('click', () => {
     ui.showDialog();
 });
 
-ui.bookDialog.addEventListener("close", () => {
+ui.bookDialog.addEventListener('close', () => {
     ui.resetForm();
 });
 
-ui.confirmBtn.addEventListener("click", (event) => {
+ui.form.addEventListener('click', (event) => {
+    if (event.target.value === 'cancel') {
+        event.preventDefault();
+        ui.closeDialog();
+    }
+});
+
+ui.form.addEventListener('submit', (event) => {
     event.preventDefault();
+
+    let isValid = true;
+
+    if (ui.titleInput.validity.valueMissing) {
+        ui.titleError.textContent = "Title field can't be empty";
+        isValid = false;
+    } else {
+        ui.titleError.textContent = '';
+    }
+
+    if (ui.authorInput.validity.valueMissing) {
+        ui.authorError.textContent = "Author field can't be empty";
+        isValid = false;
+    } else {
+        ui.authorError.textContent = '';
+    }
+
+    if (ui.pagesInput.validity.valueMissing || ui.pagesInput.value <= 0) {
+        ui.pagesError.textContent = 'Number of pages must be greater than 0';
+        isValid = false;
+    } else {
+        ui.pagesError.textContent = '';
+    }
+
+    if (!isValid) {
+        return;
+    }
+
     const { title, author, pages, isRead } = ui.getFormData();
     const newBook = new Book(title, author, pages, isRead);
     library.addBook(newBook);
@@ -148,9 +182,9 @@ ui.confirmBtn.addEventListener("click", (event) => {
 });
 
 function createDummyBooks() {
-    const book1 = new Book("The Hobbit", "J.R.R. Tolkien", 310, true);
-    const book2 = new Book("1984", "George Orwell", 328, false);
-    const book3 = new Book("To Kill a Mockingbird", "Harper Lee", 281, true);
+    const book1 = new Book('The Hobbit', 'J.R.R. Tolkien', 310, true);
+    const book2 = new Book('1984', 'George Orwell', 328, false);
+    const book3 = new Book('To Kill a Mockingbird', 'Harper Lee', 281, true);
 
     library.addBook(book1);
     library.addBook(book2);
